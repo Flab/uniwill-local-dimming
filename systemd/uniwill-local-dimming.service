@@ -1,0 +1,11 @@
+[Unit]
+Description=Apply Uniwill mini-LED local dimming setting
+ConditionPathExists=/sys/bus/wmi/devices/ABBC0F6F-8EA1-11D1-00A0-C90629100000
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/uniwill-local-dimming-apply
+
+[Install]
+WantedBy=multi-user.target

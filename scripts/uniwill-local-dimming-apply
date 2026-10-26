@@ -1,0 +1,15 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Load the module and apply the configured local dimming state.
+# Config: /etc/default/uniwill-local-dimming (LOCAL_DIMMING=0 or 1)
+GUID=ABBC0F6F-8EA1-11D1-00A0-C90629100000
+SYSFS=/sys/bus/wmi/devices/$GUID
+
+LOCAL_DIMMING=0
+[ -r /etc/default/uniwill-local-dimming ] && . /etc/default/uniwill-local-dimming
+
+modprobe uniwill_local_dimming || exit 0   # unsupported device: the module refuses to load
+
+[ "$(cat $SYSFS/local_dimming_supported 2>/dev/null)" = 1 ] || exit 0
+
+echo "$LOCAL_DIMMING" > $SYSFS/local_dimming
